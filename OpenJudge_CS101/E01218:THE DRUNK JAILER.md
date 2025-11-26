@@ -17,3 +17,4 @@ for _ in range(t):
 
     print(prisons)
 ```
+http://cs101.openjudge.cn/pctbook/E01218/
