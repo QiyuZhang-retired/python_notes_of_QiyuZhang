@@ -15,3 +15,4 @@ while True:
 
     print(n, 'card(s)')
 ```
+http://cs101.openjudge.cn/pctbook/E01003/
