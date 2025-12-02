@@ -42,6 +42,47 @@ while True:
     except EOFError:
         break
 ```
-方法二：
-1）用深度优先搜索遍历所有比赛方法，然后找到最优解
+方法二：  
+1）用lru_cache记忆化搜索，对每一个田忌的马选取剩余王的马的首尾比赛，然后找到最优解  
+2）手动改变递归栈深度，避免溢出  
+3）将dfs函数写在while里，避免缓存错误  
+```python
+from functools import lru_cache
+#手动改变递归栈深度
+import sys
+sys.setrecursionlimit(1<<30)
+
+def compare(a,b):
+    if a>b:
+        return 200
+    elif a==b:
+        return 0
+    else:
+        return -200
+
+while True:
+    n=int(input())
+    if n==0:
+        break
+
+    t_horses=list(map(int,input().split()))
+    k_horses=list(map(int,input().split()))
+    t_horses.sort()
+    k_horses.sort()
+
+    @lru_cache(maxsize=2048)
+    def dfs(start,end,i):
+        if i==n:
+            return 0
+
+        t_horse=t_horses[i]
+        k_horse_start=k_horses[start]
+        k_horse_end=k_horses[end]
+
+        x1=dfs(start+1,end,i+1)+compare(t_horse,k_horse_start)
+        x2=dfs(start,end-1,i+1)+compare(t_horse,k_horse_end)
+        return max(x1,x2)
+
+    print(dfs(0,n-1,0))
+```
 http://cs101.openjudge.cn/pctbook/T02287/
